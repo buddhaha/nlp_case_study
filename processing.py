@@ -1,27 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Foobar.py: Description of what foobar does."""
+"""precessing.py:
+    script to
+    1) preprocess data for text classification
+    2) compare different classifiers
+    3) fine-tune their parameters
+"""
 
 __author__ = "Mirek Buddha"
 
-import os
-import sys
-import argparse
 import requests
 import pandas as pd
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
-import progressbar # optional
 from time import sleep
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.pipeline import make_pipeline
-from sklearn.pipeline import Pipeline
-from ast import literal_eval
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -75,7 +73,7 @@ def translate_w_deepl(text):
     return response.json()['translations'][0]['text']
 
 DEEPL_KEY = load_auth_key()
-RAW_DATA_PATH = r"raw_data/Relevant vs Irrelevant.xlsx"
+
 
 def translate_to_eng(df):
     df['eng_title'] = str()

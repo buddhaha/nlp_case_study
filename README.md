@@ -1,40 +1,51 @@
 # nlp_case_study
+## task:
+1. Create two kinds of classifiers for this task and compare their results. You may
+use any model architecture, statistical method, NLP algorithm or other method to
+create these models,
+   > 4 classifiers were tested (using scikit lib):
+   1) [SGDClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html#sklearn.linear_model.SGDClassifier) This estimator implements regularized linear models with stochastic gradient descent (SGD) learning,
+   2) [MultinomialNB](https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html?highlight=multinomialnb#sklearn.naive_bayes.MultinomialNB) Naive Bayes classifier for multinomial models is  suitable for classification with discrete features,
+   3) [SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC) Method as a subset of support vector machine: C-Support Vector Classification.
+   4) [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html?highlight=randomforest#sklearn.ensemble.RandomForestClassifier) A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting.
+2. Compare the results of the models using whatever metric you believe is relevant
+for this type of task, and
+3. Make the code and models available for our team to review in either a python
+script, Jupyter notebook, Pycharm project, or other accessible platform. The code
+should be well-documented with step-by-step explanation of your approach to the
+classification task. Basic visualizations can be included with titles and legends,
+but color and style don’t matter.
 
-## 1) preprocessing
-0) install dependencies from requirements.txt
-1) (optional) register at deepl.com to get your personal auth key and save it in a project folder in deepl_authkey.txt file
-2) (optional) run preprocessing.py
+## info
+the code with preprocessing and model training and fine-tunning is available in [processing.py](https://github.com/buddhaha/nlp_case_study/blob/main/processing.py). Summary is shown in [show_results.ipynb](https://github.com/buddhaha/nlp_case_study/blob/main/show_results.ipynb)
+
+## 1) prepare
+1) clone repo
+> git clone https://github.com/buddhaha/nlp_case_study.git
+2) install dependencies from requirements.txt
+3) save data 'Relevant vs Irrelevant.xlsx' in raw_data/ folder
+## 2) preprocessing
+2) (optional) register at deepl.com to get your personal auth key and save it in a project folder in deepl_authkey.txt file
+3) (optional) use translate_w_deepl from preprocessing.py to translate the text
    1) translate into english
    2) tokenization
    3) lemmatization / stemming
-   4) feature extraction
-   > How to treat multiple text fields?  
-   > _FeatureUnion_ vs _ColumnTransformer_
-   > > 1st step: ColumnTransformer to get numeric data of all fields
-   > > 2nd step: eventually use FeatureUnion for e.g., combining PCA and SelectKBest
-   > 1) merge all in one string?
-   > 2) using a token for each columns (not sure how)
-   > 3) Using different dense layers (or embedding) for each column and concatenate them.
-   
-   3) vectorization
-   4) 1-4 can be done with _TfidfVectorizer_
-      1) alternatives: Count Vectorizer / Word2Vec
-   5) dimensionality reduction: apply e.g. [sklearn.decomposition.TruncatedSVD](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html) 
-   > The NaiveBayes classifier needs discrete-valued features, but the PCA breaks this property of the features. You will have to use a different classifier if you want to use PCA.
+   4) feature extraction on combined text fields (feature aggregation with ColumnTransformer)
+      1) _TfidfVectorizer_ was used as it showed pretty good results (_CountVectorizer_ or others shoud be tested)
+      2) dimensionality reduction might be needed e.g. [sklearn.decomposition.TruncatedSVD](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.TruncatedSVD.html) 
+   > NOTE: The NaiveBayes classifier needs discrete-valued features, but the PCA breaks this property of the features. You will have to use a different classifier if you want to use PCA.
 
 
-## 2) training model
+## 3) training the model
    1) train model
-      1) [sklearn.linear_model.SGDClassifier](sklearn.linear_model.SGDClassifier) (stochastic gradient descent)
-      2) SVM
-      3) naive bayes
-      4) random decision tree 
-   2) Parameter tuning with the help of GridSearchCV
-   3) Try other classification Algorithms Like 
-      1) Linear Classifier, 
-      2) Boosting Models and 
-      3) even Neural Networks.
-    
-   **_Linear classifiers (SVM, logistic regression, etc.) with SGD training._**
-> This estimator implements regularized linear models with stochastic gradient descent (SGD) learning: the gradient of the loss is estimated each sample at a time and the model is updated along the way with a decreasing strength schedule (aka learning rate). SGD allows minibatch (online/out-of-core) learning via the partial_fit method. For best results using the default learning rate schedule, the data should have zero mean and unit variance.
+   > see [processing.py](https://github.com/buddhaha/nlp_case_study/blob/main/processing.py) for detailed setting of each model 
+   2) Parameter fine-tuning with the help of GridSearchCV
+## 4) evaluation
+   All classifiers performed pretty well. Classification report for each classifier used can be seen in [show_results.ipynb](https://github.com/buddhaha/nlp_case_study/blob/main/show_results.ipynb).
+   As we want to minimize *false positive* (FP), from definition of *precision* (precision= TP/(TP+FP)) we seek to approach 1 or 100% with precision.
 
+## 5) improvments @TODO:
+   1) translate text with some api and implement following preprocessing pipeline: tokenization, stopwords removal, lemmatization; se we dont have to throw half of the data away.
+   2) multilang classifiers / feature extractor?
+   
+   
