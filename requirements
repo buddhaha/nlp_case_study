@@ -1,0 +1,7 @@
+pandas
+## optional for translation / deepl
+# response
+# needed for pandas to load .xlsx files
+openpyxl
+sklearn
+time
