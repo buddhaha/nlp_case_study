@@ -44,6 +44,9 @@ the code with preprocessing and model training and fine-tunning is available in 
    All classifiers performed pretty well. Classification report for each classifier used can be seen in [show_results.ipynb](https://github.com/buddhaha/nlp_case_study/blob/main/show_results.ipynb).
    As we want to minimize *false positive* (FP), from definition of *precision* (precision= TP/(TP+FP)) we seek to approach 1 or 100% with precision.
 
+![alt text](https://github.com/buddhaha/nlp_case_study/blob/main/perf_comparison.png?raw=True)
+
+
 ## 5) improvments @TODO:
    1) translate text with some api and implement following preprocessing pipeline: tokenization, stopwords removal, lemmatization; se we dont have to throw half of the data away.
    2) multilang classifiers / feature extractor?
